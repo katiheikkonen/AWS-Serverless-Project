@@ -2,15 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AWS-Serverless-Project
 
-
 Parameters:
   LambdaRole:
     Type: String
     Default: arn:aws:iam::821383200340:role/AWS-Serverless-KatiMitja
-
-Globals:
-  Function:
-    Timeout: 3
 
 Resources:
   CreateUserFunction:
@@ -28,7 +23,21 @@ Resources:
             Path: /user
             Method: post
 
-Resources:
+  UpdateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: update_user.update_item
+      Role: !Ref LambdaRole
+      Runtime: python3.8
+      Tracing: Active
+      Events:
+        CreateUser:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: put
+
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
