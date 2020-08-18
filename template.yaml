@@ -2,19 +2,14 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AWS-Serverless-Project
 
-
 Parameters:
   LambdaRole:
     Type: String
     Default: arn:aws:iam::821383200340:role/AWS-Serverless-KatiMitja
 
-Globals:
-  Function:
-    Timeout: 3
-
 Resources:
   CreateUserFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
       Handler: create_user.create_item
@@ -23,13 +18,28 @@ Resources:
       Tracing: Active
       Events:
         CreateUser:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /user
             Method: post
 
+  UpdateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: update_user.update_item
+      Role: !Ref LambdaRole
+      Runtime: python3.8
+      Tracing: Active
+      Events:
+        UpdateUser:
+          Type: Api 
+          Properties:
+            Path: /user/{id}
+            Method: put
+
   RetrieveUserFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
       Handler: retrieve_user.retrieve_user
@@ -37,11 +47,12 @@ Resources:
       Runtime: python3.8
       Tracing: Active
       Events:
-        CreateUser:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        RetrieveUser:
+          Type: Api
           Properties:
             Path: /user/{id}
             Method: get
+
 
   DeleteUserFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
