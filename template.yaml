@@ -2,6 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AWS-Serverless-Project
 
+
 Parameters:
   LambdaRole:
     Type: String
@@ -15,8 +16,8 @@ Resources:
   CreateUserFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: scripts/
-      Handler: create_item.create_item
+      CodeUri: src/
+      Handler: create_user.create_item
       Role: !Ref LambdaRole
       Runtime: python3.8
       Tracing: Active
@@ -26,3 +27,22 @@ Resources:
           Properties:
             Path: /user
             Method: post
+
+Resources:
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: 'userdata'
+      Tags:
+        - Key: Owner
+          Value: Kati
+
