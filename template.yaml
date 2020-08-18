@@ -9,7 +9,7 @@ Parameters:
 
 Resources:
   CreateUserFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
       Handler: create_user.create_item
@@ -18,7 +18,7 @@ Resources:
       Tracing: Active
       Events:
         CreateUser:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /user
             Method: post
@@ -32,12 +32,27 @@ Resources:
       Runtime: python3.8
       Tracing: Active
       Events:
-        CreateUser:
-          Type: Api
+        UpdateUser:
+          Type: Api 
           Properties:
             Path: /user/{id}
             Method: put
 
+  RetrieveUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: retrieve_user.retrieve_user
+      Role: !Ref LambdaRole
+      Runtime: python3.8
+      Tracing: Active
+      Events:
+        RetrieveUser:
+          Type: Api
+          Properties:
+            Path: /user/{id}
+            Method: get
+            
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
