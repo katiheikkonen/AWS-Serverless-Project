@@ -28,7 +28,21 @@ Resources:
             Path: /user
             Method: post
 
-Resources:
+  RetrieveUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: retrieve_user.retrieve_user
+      Role: !Ref LambdaRole
+      Runtime: python3.8
+      Tracing: Active
+      Events:
+        CreateUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /user/{id}
+            Method: get
+
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
