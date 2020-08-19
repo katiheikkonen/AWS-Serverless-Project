@@ -1,5 +1,4 @@
 import boto3
-import json
 
 def retrieve_user(event, context):
     itemid = event['id']
@@ -11,7 +10,4 @@ def retrieve_user(event, context):
             'id': itemid
         })
 
-    return {
-        "statusCode": 200,
-        'body': json.dumps(response)
-    }
+    return response
