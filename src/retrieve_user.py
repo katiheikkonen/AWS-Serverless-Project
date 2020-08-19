@@ -2,7 +2,7 @@ import boto3
 import json
 
 def retrieve_user(event, context):
-    itemid = event['pathParameters']['id']
+    itemid = event['id']
 
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('userdata')
