@@ -8,8 +8,5 @@ def get_covid_data(event, context):
 
     countries_data = covid_data.json()['Countries']
     response = list(filter(lambda countrylist: countrylist['Country'] == usercountry, countries_data))
-    print(response)
-    return {
-        "statusCode": 200,
-        'body': json.dumps(response[0])
-    }
+
+    return response[0]
