@@ -64,10 +64,19 @@ Resources:
       Tracing: Active
       Events:
         CreateUser:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /user/{id}
             Method: delete
+
+  GetCovidData:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: get_covid_data.get_covid_data
+      Role: !Ref LambdaRole
+      Runtime: python3.8
+      Tracing: Active
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
