@@ -1,7 +1,7 @@
 import boto3
 import json
 
-eventbridge = boto3.client('events', region_name='ap-northeast-1')
+eventbridge = boto3.client('events')
 
 def create_eventbridge():
 
