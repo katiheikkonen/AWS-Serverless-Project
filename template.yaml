@@ -102,6 +102,15 @@ Resources:
       Runtime: python3.8
       Tracing: Active
 
+  SendSNS:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/
+        Handler: send_sns.send_sns
+        Role: !Ref LambdaRole
+        Runtime: python3.8
+        Tracing: Active
+
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -118,4 +127,3 @@ Resources:
       Tags:
         - Key: Owner
           Value: Kati
-
