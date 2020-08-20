@@ -16,7 +16,7 @@ def get_weather_data(event, context):
     data = {
         "id": event['Item']['id'],
         "weather": city_data['list'][0]['weather'][0]['main'],  # weather (Clear, Clouds, Rain)
-        "weather_decription": city_data['list'][0]['weather'][0]['description'],  # more precise description on weather
+        "weather_description": city_data['list'][0]['weather'][0]['description'],  # more precise description on weather
         "temperature": city_data['list'][0]['main']['temp'],  # current temperature
         "feels_like": city_data['list'][0]['main']['feels_like']  # what temperature feels like
     }
