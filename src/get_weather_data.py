@@ -16,6 +16,7 @@ def get_weather_data(event, context):
     data = {
         "id": event['Item']['id'],
         "username": event['Item']['username'],
+        "email": event['Item']['email'],
         "city": usercity,
         "weather": city_data['list'][0]['weather'][0]['main'],  # weather (Clear, Clouds, Rain)
         "weather_description": city_data['list'][0]['weather'][0]['description'],  # more precise description on weather
