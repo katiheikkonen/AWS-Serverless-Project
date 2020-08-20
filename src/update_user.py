@@ -14,9 +14,10 @@ def update_item(event, context):
             ':city': data['city'],
             ':country': data['country'],
             ':email': data['email'],
-            ':username': data['username']
+            ':username': data['username'],
+            ':notifications': data['notifications']
         },
-        UpdateExpression='SET city = :city, country = :country, email = :email, username = :username',
+        UpdateExpression='SET city = :city, country = :country, email = :email, username = :username, notifications = :notifications',
         ReturnValues='ALL_NEW'
     )
     response = {
