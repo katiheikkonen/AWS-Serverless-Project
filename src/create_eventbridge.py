@@ -3,30 +3,32 @@ import json
 
 eventbridge = boto3.client('events')
 
-def create_eventbridge():
-
-    #user_id = json.loads(event['body']['id'])
-    #schedule = json.loads(event['body']['schedule'])
-    #rulename = f'ScheduledStepFunction{user_id}'
-    rulename = 'boto3test'
+def create_eventbridge(event, context):
+    payload = json.loads(event['body'])
+    user_id = payload['id']
+    schedule = payload['schedule']
+    rulename = f'ScheduledStepFunction{user_id}'
 
     eventbridge.put_rule(
         Name=rulename,
-        ScheduleExpression='cron(0 11 * * ? *)',
+        ScheduleExpression=f'cron(0 {schedule} * * ? *)',
         Description='User cron notification rule',
         RoleArn='arn:aws:iam::821383200340:role/AWS-Serverless-KatiMitja'
     )
 
     eventbridge.put_targets(
-            Rule=rulename,
-            Targets=[
-                {
-                    'Arn': 'arn:aws:states:ap-northeast-1:821383200340:stateMachine:Waitstate',
-                    'Input':
-                        '{"id": "2"}',
-                    'Id': 'aws-serverlessproject',
-                    'RoleArn': 'arn:aws:iam::821383200340:role/AWS-Serverless-KatiMitja'
-                }]
-            )
+        Rule=rulename,
+        Targets=[
+            {
+                'Arn': 'arn:aws:states:ap-northeast-1:821383200340:stateMachine:Waitstate',
+                'Input':
+                    json.dumps({"id": user_id}),
+                'Id': 'aws-serverlessproject',
+                'RoleArn': 'arn:aws:iam::821383200340:role/AWS-Serverless-KatiMitja'
+            }]
+    )
 
-create_eventbridge()
+    return {
+        "statusCode": 200,
+        "body": json.dumps(payload)
+    }
