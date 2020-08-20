@@ -1,23 +1,23 @@
 import boto3
 import json
 
-client = boto3.client('sns')
 client = boto3.client('ses')
 
 def send_ses(event, context):
-    name = event['output'][0]['username']
-    city = event['output'][0]['city']
-    country = event['output'][1]['country']
-    weather = event['output'][0]['weather']
-    temperature = event['output'][0]['temperature']
-    feels_like = event['output'][0]['feels_like']
-    new_cases = event['output'][1]["new_cases"]
-    total_cases = event['output'][1]["total_cases"]
-    new_recovered = event['output'][1]["new_recovered"]
-    total_recovered = event['output'][1]["total_recovered"]
+    name = event[0]['username']
+    email = event[0]['email']
+    city = event[0]['city']
+    country = event[1]['country']
+    weather = event[0]['weather']
+    temperature = event[0]['temperature']
+    feels_like = event[0]['feels_like']
+    new_cases = event[1]["new_cases"]
+    total_cases = event[1]["total_cases"]
+    new_recovered = event[1]["new_recovered"]
+    total_recovered = event[1]["total_recovered"]
 
     if weather == "Clouds":
-        weather_message = "It's going to be cloudy."
+        weather_message = "Weather is going to be cloudy."
         photo = 'https://aws-bucket-serverless.s3-ap-northeast-1.amazonaws.com/clouds.jpg'
     elif weather == "Clear":
         weather_message = "Weather is going to be sunny so remember your sunglasses!"
@@ -38,7 +38,7 @@ def send_ses(event, context):
         Source='tsttestitesti@gmail.com',
         Destination={
             'ToAddresses': [
-                'tsttestitesti@gmail.com',
+                email,
             ],
         },
         Message={
