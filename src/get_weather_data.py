@@ -14,6 +14,7 @@ def get_weather_data(event, context):
         f'https://api.openweathermap.org/data/2.5/forecast?units=metric&q={usercity}&appid={apikey}')
     city_data = weather_data.json()
     data = {
+        "id": event['Item']['id'],
         "weather": city_data['list'][0]['weather'][0]['main'],  # weather (Clear, Clouds, Rain)
         "weather_decription": city_data['list'][0]['weather'][0]['description'],  # more precise description on weather
         "temperature": city_data['list'][0]['main']['temp'],  # current temperature
