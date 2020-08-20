@@ -14,7 +14,8 @@ def create_item(event, context):
         'username': json_data['username'],
         'email': json_data['email'],
         'city': json_data['city'],
-        'country': json_data['country']
+        'country': json_data['country'],
+        'notifications': 'N'
     }
     table.put_item(Item=item)
 
