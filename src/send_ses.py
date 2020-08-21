@@ -4,11 +4,13 @@ import json
 client = boto3.client('ses')
 
 def send_ses(event, context):
+    #  parsitaan tiedot, joita viestissä tarvitaan
     name = event[0]['username']
     email = event[0]['email']
     city = event[0]['city']
     country = event[1]['country']
     weather = event[0]['weather']
+    weather_description = event[0]['weather_description']
     temperature = event[0]['temperature']
     feels_like = event[0]['feels_like']
     new_cases = event[1]["new_cases"]
@@ -16,24 +18,28 @@ def send_ses(event, context):
     new_recovered = event[1]["new_recovered"]
     total_recovered = event[1]["total_recovered"]
 
+    #  lisätään kommentti sään mukaan
     if weather == "Clouds":
-        weather_message = "Weather is going to be cloudy."
-        photo = 'https://aws-bucket-serverless.s3-ap-northeast-1.amazonaws.com/clouds.jpg'
+        if weather_description != "overcast clouds":
+            weather_message = f"Weather is going to be {weather_description}."
+        else:
+            weather_message = "Weather is going to be cloudy."
     elif weather == "Clear":
         weather_message = "Weather is going to be sunny so remember your sunglasses!"
-        photo = 'https://aws-bucket-serverless.s3-ap-northeast-1.amazonaws.com/sun.jpg'
     elif weather == "Rain":
         weather_message = "It's going to rain so remember to bring your umbrella!"
-        photo = 'https://aws-bucket-serverless.s3-ap-northeast-1.amazonaws.com/rain.jpg'
     else:
         weather_message = ""
 
-    message = f'Hello {name}!\nThis is your daily report from Kati and Mitja Fantastic Travels.\n\
-    It is currently {temperature} °C in {city} and it feels like {feels_like} °C. \
-    \n{weather_message}\nYour daily Covid-19 statistics: \n \
-    There are {new_cases} new Covid-19 cases in {country}. The total number of cases in {country} is {total_cases}.\n \
-    There are {new_recovered} new recoveries in {country} today and the total number of recoveries is {total_recovered}.'
+    #  muodostetaan lähetettävä viesti henkilön tietojen perusteella
+    message = f'Hello {name}!\nThis is your daily report from Fantastic Travels.\
+    \nIt is currently {temperature} °C in {city} and it feels like {feels_like} °C.\
+    \n{weather_message}\nYour daily Covid-19 statistics:\
+    \nThere are {new_cases} new Covid-19 cases in {country}. The total number of cases in {country} is {total_cases}.\
+    \nThere are {new_recovered} new recoveries in {country} today and the total number of recoveries is {total_recovered}.\
+    \nStay safe and wash your hands!'
 
+    #  lähetetään viesti
     client.send_email(
         Source='tsttestitesti@gmail.com',
         Destination={
