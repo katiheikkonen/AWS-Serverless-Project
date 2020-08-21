@@ -46,13 +46,21 @@ Resources:
       Role: !Ref LambdaRole
       Runtime: python3.8
       Tracing: Active
+
+  RetrieveUserApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: retrieve_user_api.retrieve_user_api
+      Role: !Ref LambdaRole
+      Runtime: python3.8
+      Tracing: Active
       Events:
-        RetrieveUser:
+        UpdateUser:
           Type: Api
           Properties:
             Path: /user/{id}
             Method: get
-
 
   DeleteUserFunction:
     Type: AWS::Serverless::Function
