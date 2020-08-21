@@ -11,6 +11,7 @@ def get_covid_data(event, context):
     # filters the object from the entire array of countries where the country is the same as the country in user record
     selected_country = list(filter(lambda countrylist: countrylist['Country'] == usercountry, countries_data))
 
+    # parses out specific data fields from the individual country data
     response = {
         "id": event['Item']['id'],
         "country": selected_country[0]['Country'],
