@@ -2,7 +2,7 @@ import boto3
 import json
 import requests
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-1')
 lambda_client = boto3.client('lambda', region_name='ap-northeast-1')
 
 # function which checks from the database if user already has notifications enabled and acts accordingly
